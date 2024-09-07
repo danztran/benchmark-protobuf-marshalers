@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option go_package = "github.com/danztran/benchmark-protobuf-marshalers/proto;pb";
+
+message Product {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  float price = 4;
+  bool availability = 5;
+
+  message Category {
+    int32 id = 1;
+    string name = 2;
+  }
+
+  message Supplier {
+    int32 id = 1;
+    string name = 2;
+    string contact_info = 3;
+  }
+
+  repeated Category categories = 6;
+  Supplier supplier = 7;
+
+  // Dynamic map to store additional attributes
+  map<string, string> attributes = 8;
+}
