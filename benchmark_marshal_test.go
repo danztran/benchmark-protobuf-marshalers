@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/bytedance/sonic"
 	gj "github.com/goccy/go-json"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/vmihailenco/msgpack/v5"
@@ -11,38 +12,67 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func BenchmarkJsonMarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, _ = json.Marshal(benchData)
-	}
-}
+func BenchmarkMarshal(b *testing.B) {
+	b.Run("Json", func(b *testing.B) {
+		for range b.N {
+			_, err := json.Marshal(benchData)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
 
-func BenchmarkProtoMarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, _ = proto.Marshal(benchData)
-	}
-}
+	b.Run("Proto", func(b *testing.B) {
+		for range b.N {
+			_, err := proto.Marshal(benchData)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
 
-func BenchmarkProtoJsonMarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, _ = protojson.Marshal(benchData)
-	}
-}
+	b.Run("ProtoJson", func(b *testing.B) {
+		for range b.N {
+			_, err := protojson.Marshal(benchData)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
 
-func BenchmarkJsoniterMarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, _ = jsoniter.Marshal(benchData)
-	}
-}
+	b.Run("Jsoniter", func(b *testing.B) {
+		for range b.N {
+			_, err := jsoniter.Marshal(benchData)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
 
-func BenchmarkGoccyJsonMarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, _ = gj.Marshal(benchData)
-	}
-}
+	b.Run("GoccyJson", func(b *testing.B) {
+		for range b.N {
+			_, err := gj.Marshal(benchData)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
 
-func BenchmarkMsgpackMarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, _ = msgpack.Marshal(benchData)
-	}
+	b.Run("Msgpack", func(b *testing.B) {
+		for range b.N {
+			_, err := msgpack.Marshal(benchData)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+
+	b.Run("Sonic", func(b *testing.B) {
+		for range b.N {
+			_, err := sonic.Marshal(benchData)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
 }
