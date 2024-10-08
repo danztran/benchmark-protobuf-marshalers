@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/bytedance/sonic"
 	gj "github.com/goccy/go-json"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/vmihailenco/msgpack/v5"
@@ -18,46 +19,56 @@ var (
 	jsoniterData, _  = jsoniter.Marshal(benchData)
 	goccyJsonData, _ = gj.Marshal(benchData)
 	msgpackData, _   = msgpack.Marshal(benchData)
+	sonicData, _     = sonic.Marshal(benchData)
 )
 
-func BenchmarkJsonUnmarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		data := newProduct()
-		_ = json.Unmarshal(jsonData, data)
-	}
-}
+func BenchmarkUnmarshal(b *testing.B) {
+	b.Run("Json", func(b *testing.B) {
+		for range b.N {
+			data := newProduct()
+			_ = json.Unmarshal(jsonData, data)
+		}
+	})
 
-func BenchmarkProtoUnmarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		data := newProduct()
-		_ = proto.Unmarshal(protoData, data)
-	}
-}
+	b.Run("Proto", func(b *testing.B) {
+		for range b.N {
+			data := newProduct()
+			_ = proto.Unmarshal(protoData, data)
+		}
+	})
 
-func BenchmarkProtoJsonUnmarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		data := newProduct()
-		_ = protojson.Unmarshal(protoJsonData, data)
-	}
-}
+	b.Run("ProtoJson", func(b *testing.B) {
+		for range b.N {
+			data := newProduct()
+			_ = protojson.Unmarshal(protoJsonData, data)
+		}
+	})
 
-func BenchmarkJsoniterUnmarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		data := newProduct()
-		_ = jsoniter.Unmarshal(jsoniterData, data)
-	}
-}
+	b.Run("Jsoniter", func(b *testing.B) {
+		for range b.N {
+			data := newProduct()
+			_ = jsoniter.Unmarshal(jsoniterData, data)
+		}
+	})
 
-func BenchmarkGoccyJsonUnmarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		data := newProduct()
-		_ = gj.Unmarshal(goccyJsonData, data)
-	}
-}
+	b.Run("GoccyJson", func(b *testing.B) {
+		for range b.N {
+			data := newProduct()
+			_ = gj.Unmarshal(goccyJsonData, data)
+		}
+	})
 
-func BenchmarkMsgpackUnmarshal(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		data := newProduct()
-		_ = msgpack.Unmarshal(msgpackData, data)
-	}
+	b.Run("Msgpack", func(b *testing.B) {
+		for range b.N {
+			data := newProduct()
+			_ = msgpack.Unmarshal(msgpackData, data)
+		}
+	})
+
+	b.Run("Sonic", func(b *testing.B) {
+		for range b.N {
+			data := newProduct()
+			_ = sonic.Unmarshal(sonicData, data)
+		}
+	})
 }

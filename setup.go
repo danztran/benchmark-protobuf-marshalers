@@ -12,7 +12,7 @@ var benchData = genProduct()
 func genProduct() *pb.Product {
 	d := newProduct()
 	err := faker.FakeData(d,
-		options.WithRandomMapAndSliceMaxSize(10))
+		options.WithRandomMapAndSliceMaxSize(100))
 	if err != nil {
 		panic(err)
 	}
