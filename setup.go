@@ -32,10 +32,3 @@ func checkErr(b testing.TB, err error) {
 		b.Fatal(err)
 	}
 }
-
-func preBench(b *testing.B, raw []byte, err error) {
-	b.Helper()
-	checkErr(b, err)
-	b.SetBytes(int64(len(raw)))
-	b.ResetTimer()
-}

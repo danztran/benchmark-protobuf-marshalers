@@ -77,10 +77,8 @@ func BenchmarkMarshal(b *testing.B) {
 
 	b.Run("Sonic", func(b *testing.B) {
 		for range b.N {
-			_, err := sonic.ConfigStd.Marshal(benchData)
-			if err != nil {
-				b.Fatal(err)
-			}
+			_, err := sonic.Marshal(benchData)
+			checkErr(b, err)
 		}
 	})
 }

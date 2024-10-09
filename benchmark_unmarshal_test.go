@@ -79,8 +79,16 @@ func BenchmarkUnmarshal(b *testing.B) {
 		raw, err := sonic.Marshal(benchData)
 		preBench(b, raw, err)
 		for range b.N {
-			data := newProduct()
-			_ = sonic.ConfigStd.Unmarshal(sonicData, data)
+			prod := newProduct()
+			err := sonic.Unmarshal(raw, prod)
+			checkErr(b, err)
 		}
 	})
+}
+
+func preBench(b *testing.B, raw []byte, err error) {
+	b.Helper()
+	checkErr(b, err)
+	b.SetBytes(int64(len(raw)))
+	b.ResetTimer()
 }
