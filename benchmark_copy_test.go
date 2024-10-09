@@ -28,19 +28,6 @@ func BenchmarkCopy(b *testing.B) {
 		}
 	})
 
-	b.Run("Proto", func(b *testing.B) {
-		for i := range b.N {
-			raw, err := proto.Marshal(benchData)
-			checkErr(b, err)
-			d := newProduct()
-			err = proto.Unmarshal(raw, d)
-			checkErr(b, err)
-			if i == 0 {
-				b.SetBytes(int64(len(raw)))
-			}
-		}
-	})
-
 	b.Run("ProtoJson", func(b *testing.B) {
 		for i := range b.N {
 			raw, err := protojson.Marshal(benchData)
@@ -60,6 +47,19 @@ func BenchmarkCopy(b *testing.B) {
 			checkErr(b, err)
 			d := newProduct()
 			err = msgpack.Unmarshal(raw, d)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(raw)))
+			}
+		}
+	})
+
+	b.Run("Proto", func(b *testing.B) {
+		for i := range b.N {
+			raw, err := proto.Marshal(benchData)
+			checkErr(b, err)
+			d := newProduct()
+			err = proto.Unmarshal(raw, d)
 			checkErr(b, err)
 			if i == 0 {
 				b.SetBytes(int64(len(raw)))
