@@ -68,7 +68,7 @@ func BenchmarkUnmarshal(b *testing.B) {
 	b.Run("Sonic", func(b *testing.B) {
 		for range b.N {
 			data := newProduct()
-			_ = sonic.Unmarshal(sonicData, data)
+			_ = sonic.ConfigStd.Unmarshal(sonicData, data)
 		}
 	})
 }
