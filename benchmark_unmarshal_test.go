@@ -25,22 +25,32 @@ func BenchmarkUnmarshal(b *testing.B) {
 		}
 	})
 
-	b.Run("Proto", func(b *testing.B) {
-		raw, err := proto.Marshal(benchData)
-		preBench(b, raw, err)
-		for range b.N {
-			prod := newProduct()
-			err := proto.Unmarshal(raw, prod)
-			checkErr(b, err)
-		}
-	})
-
 	b.Run("ProtoJson", func(b *testing.B) {
 		raw, err := protojson.Marshal(benchData)
 		preBench(b, raw, err)
 		for range b.N {
 			prod := newProduct()
 			err := protojson.Unmarshal(raw, prod)
+			checkErr(b, err)
+		}
+	})
+
+	b.Run("Msgpack", func(b *testing.B) {
+		raw, err := msgpack.Marshal(benchData)
+		preBench(b, raw, err)
+		for range b.N {
+			prod := newProduct()
+			err := msgpack.Unmarshal(raw, prod)
+			checkErr(b, err)
+		}
+	})
+
+	b.Run("Proto", func(b *testing.B) {
+		raw, err := proto.Marshal(benchData)
+		preBench(b, raw, err)
+		for range b.N {
+			prod := newProduct()
+			err := proto.Unmarshal(raw, prod)
 			checkErr(b, err)
 		}
 	})
@@ -61,16 +71,6 @@ func BenchmarkUnmarshal(b *testing.B) {
 		for range b.N {
 			prod := newProduct()
 			err := gj.Unmarshal(raw, prod)
-			checkErr(b, err)
-		}
-	})
-
-	b.Run("Msgpack", func(b *testing.B) {
-		raw, err := msgpack.Marshal(benchData)
-		preBench(b, raw, err)
-		for range b.N {
-			prod := newProduct()
-			err := msgpack.Unmarshal(raw, prod)
 			checkErr(b, err)
 		}
 	})
