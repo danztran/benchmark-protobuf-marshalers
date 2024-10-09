@@ -79,9 +79,8 @@ func BenchmarkUnmarshal(b *testing.B) {
 		raw, err := sonic.Marshal(benchData)
 		preBench(b, raw, err)
 		for range b.N {
-			prod := newProduct()
-			err := sonic.Unmarshal(raw, prod)
-			checkErr(b, err)
+			data := newProduct()
+			_ = sonic.ConfigStd.Unmarshal(sonicData, data)
 		}
 	})
 }

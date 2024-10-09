@@ -76,11 +76,10 @@ func BenchmarkMarshal(b *testing.B) {
 	})
 
 	b.Run("Sonic", func(b *testing.B) {
-		for i := range b.N {
-			data, err := sonic.Marshal(benchData)
-			checkErr(b, err)
-			if i == 0 {
-				b.SetBytes(int64(len(data)))
+		for range b.N {
+			_, err := sonic.ConfigStd.Marshal(benchData)
+			if err != nil {
+				b.Fatal(err)
 			}
 		}
 	})
