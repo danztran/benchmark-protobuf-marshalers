@@ -13,66 +13,72 @@ import (
 )
 
 func BenchmarkMarshal(b *testing.B) {
-	b.Run("Json", func(b *testing.B) {
-		for range b.N {
-			_, err := json.Marshal(benchData)
-			if err != nil {
-				b.Fatal(err)
-			}
-		}
-	})
+	benchData := genProduct(b)
 
-	b.Run("Proto", func(b *testing.B) {
-		for range b.N {
-			_, err := proto.Marshal(benchData)
-			if err != nil {
-				b.Fatal(err)
+	b.Run("Json", func(b *testing.B) {
+		for i := range b.N {
+			data, err := json.Marshal(benchData)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(data)))
 			}
 		}
 	})
 
 	b.Run("ProtoJson", func(b *testing.B) {
-		for range b.N {
-			_, err := protojson.Marshal(benchData)
-			if err != nil {
-				b.Fatal(err)
-			}
-		}
-	})
-
-	b.Run("Jsoniter", func(b *testing.B) {
-		for range b.N {
-			_, err := jsoniter.Marshal(benchData)
-			if err != nil {
-				b.Fatal(err)
-			}
-		}
-	})
-
-	b.Run("GoccyJson", func(b *testing.B) {
-		for range b.N {
-			_, err := gj.Marshal(benchData)
-			if err != nil {
-				b.Fatal(err)
+		for i := range b.N {
+			data, err := protojson.Marshal(benchData)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(data)))
 			}
 		}
 	})
 
 	b.Run("Msgpack", func(b *testing.B) {
-		for range b.N {
-			_, err := msgpack.Marshal(benchData)
-			if err != nil {
-				b.Fatal(err)
+		for i := range b.N {
+			data, err := msgpack.Marshal(benchData)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(data)))
+			}
+		}
+	})
+
+	b.Run("Proto", func(b *testing.B) {
+		for i := range b.N {
+			data, err := proto.Marshal(benchData)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(data)))
+			}
+		}
+	})
+
+	b.Run("Jsoniter", func(b *testing.B) {
+		for i := range b.N {
+			data, err := jsoniter.Marshal(benchData)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(data)))
+			}
+		}
+	})
+
+	b.Run("GoccyJson", func(b *testing.B) {
+		for i := range b.N {
+			data, err := gj.Marshal(benchData)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(data)))
 			}
 		}
 	})
 
 	b.Run("Sonic", func(b *testing.B) {
 		for range b.N {
-			_, err := sonic.ConfigStd.Marshal(benchData)
-			if err != nil {
-				b.Fatal(err)
-			}
+			_, err := sonic.Marshal(benchData)
+			checkErr(b, err)
 		}
 	})
 }
