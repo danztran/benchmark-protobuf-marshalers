@@ -14,7 +14,7 @@ import (
 
 func TestJson(t *testing.T) {
 	t.Parallel()
-	data := genProduct()
+	data := genProduct(t)
 	require.NotZero(t, data)
 
 	raw, err := json.Marshal(data)
@@ -30,7 +30,7 @@ func TestJson(t *testing.T) {
 
 func TestGrpc(t *testing.T) {
 	t.Parallel()
-	data := genProduct()
+	data := genProduct(t)
 	require.NotZero(t, data)
 
 	raw, err := proto.Marshal(data)
@@ -46,7 +46,7 @@ func TestGrpc(t *testing.T) {
 
 func TestProtoClone(t *testing.T) {
 	t.Parallel()
-	data := genProduct()
+	data := genProduct(t)
 	require.NotZero(t, data)
 
 	d := protoClone(data)
@@ -56,7 +56,7 @@ func TestProtoClone(t *testing.T) {
 
 func TestProtoJson(t *testing.T) {
 	t.Parallel()
-	data := genProduct()
+	data := genProduct(t)
 	require.NotZero(t, data)
 
 	raw, err := protojson.Marshal(data)
@@ -72,7 +72,7 @@ func TestProtoJson(t *testing.T) {
 
 func TestJsoniter(t *testing.T) {
 	t.Parallel()
-	data := genProduct()
+	data := genProduct(t)
 	require.NotZero(t, data)
 
 	raw, err := jsoniter.Marshal(data)
@@ -88,7 +88,7 @@ func TestJsoniter(t *testing.T) {
 
 func TestGoccyJson(t *testing.T) {
 	t.Parallel()
-	data := genProduct()
+	data := genProduct(t)
 	require.NotZero(t, data)
 
 	raw, err := gj.Marshal(data)
@@ -104,7 +104,7 @@ func TestGoccyJson(t *testing.T) {
 
 func TestMsgpack(t *testing.T) {
 	t.Parallel()
-	data := genProduct()
+	data := genProduct(t)
 	require.NotZero(t, data)
 
 	raw, err := msgpack.Marshal(data)

@@ -12,63 +12,76 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-var (
-	jsonData, _      = json.Marshal(benchData)
-	protoData, _     = proto.Marshal(benchData)
-	protoJsonData, _ = protojson.Marshal(benchData)
-	jsoniterData, _  = jsoniter.Marshal(benchData)
-	goccyJsonData, _ = gj.Marshal(benchData)
-	msgpackData, _   = msgpack.Marshal(benchData)
-	sonicData, _     = sonic.Marshal(benchData)
-)
-
 func BenchmarkUnmarshal(b *testing.B) {
+	benchData := genProduct(b)
+
 	b.Run("Json", func(b *testing.B) {
+		raw, err := json.Marshal(benchData)
+		preBench(b, raw, err)
 		for range b.N {
-			data := newProduct()
-			_ = json.Unmarshal(jsonData, data)
+			prod := newProduct()
+			err := json.Unmarshal(raw, prod)
+			checkErr(b, err)
 		}
 	})
 
 	b.Run("Proto", func(b *testing.B) {
+		raw, err := proto.Marshal(benchData)
+		preBench(b, raw, err)
 		for range b.N {
-			data := newProduct()
-			_ = proto.Unmarshal(protoData, data)
+			prod := newProduct()
+			err := proto.Unmarshal(raw, prod)
+			checkErr(b, err)
 		}
 	})
 
 	b.Run("ProtoJson", func(b *testing.B) {
+		raw, err := protojson.Marshal(benchData)
+		preBench(b, raw, err)
 		for range b.N {
-			data := newProduct()
-			_ = protojson.Unmarshal(protoJsonData, data)
+			prod := newProduct()
+			err := protojson.Unmarshal(raw, prod)
+			checkErr(b, err)
 		}
 	})
 
 	b.Run("Jsoniter", func(b *testing.B) {
+		raw, err := jsoniter.Marshal(benchData)
+		preBench(b, raw, err)
 		for range b.N {
-			data := newProduct()
-			_ = jsoniter.Unmarshal(jsoniterData, data)
+			prod := newProduct()
+			err := jsoniter.Unmarshal(raw, prod)
+			checkErr(b, err)
 		}
 	})
 
 	b.Run("GoccyJson", func(b *testing.B) {
+		raw, err := gj.Marshal(benchData)
+		preBench(b, raw, err)
 		for range b.N {
-			data := newProduct()
-			_ = gj.Unmarshal(goccyJsonData, data)
+			prod := newProduct()
+			err := gj.Unmarshal(raw, prod)
+			checkErr(b, err)
 		}
 	})
 
 	b.Run("Msgpack", func(b *testing.B) {
+		raw, err := msgpack.Marshal(benchData)
+		preBench(b, raw, err)
 		for range b.N {
-			data := newProduct()
-			_ = msgpack.Unmarshal(msgpackData, data)
+			prod := newProduct()
+			err := msgpack.Unmarshal(raw, prod)
+			checkErr(b, err)
 		}
 	})
 
 	b.Run("Sonic", func(b *testing.B) {
+		raw, err := sonic.Marshal(benchData)
+		preBench(b, raw, err)
 		for range b.N {
-			data := newProduct()
-			_ = sonic.Unmarshal(sonicData, data)
+			prod := newProduct()
+			err := sonic.Unmarshal(raw, prod)
+			checkErr(b, err)
 		}
 	})
 }

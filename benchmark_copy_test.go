@@ -13,66 +13,105 @@ import (
 )
 
 func BenchmarkCopy(b *testing.B) {
-	b.Run("JsonCopy", func(b *testing.B) {
+	benchData := genProduct(b)
+
+	b.Run("Json", func(b *testing.B) {
+		for i := range b.N {
+			raw, err := json.Marshal(benchData)
+			checkErr(b, err)
+			d := newProduct()
+			err = json.Unmarshal(raw, d)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(raw)))
+			}
+		}
+	})
+
+	b.Run("Proto", func(b *testing.B) {
+		for i := range b.N {
+			raw, err := proto.Marshal(benchData)
+			checkErr(b, err)
+			d := newProduct()
+			err = proto.Unmarshal(raw, d)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(raw)))
+			}
+		}
+	})
+
+	b.Run("ProtoJson", func(b *testing.B) {
+		for i := range b.N {
+			raw, err := protojson.Marshal(benchData)
+			checkErr(b, err)
+			d := newProduct()
+			err = protojson.Unmarshal(raw, d)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(raw)))
+			}
+		}
+	})
+
+	b.Run("Msgpack", func(b *testing.B) {
+		for i := range b.N {
+			raw, err := msgpack.Marshal(benchData)
+			checkErr(b, err)
+			d := newProduct()
+			err = msgpack.Unmarshal(raw, d)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(raw)))
+			}
+		}
+	})
+
+	b.Run("Jsoniter", func(b *testing.B) {
+		for i := range b.N {
+			raw, err := jsoniter.Marshal(benchData)
+			checkErr(b, err)
+			d := newProduct()
+			err = jsoniter.Unmarshal(raw, d)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(raw)))
+			}
+		}
+	})
+
+	b.Run("GoccyJson", func(b *testing.B) {
+		for i := range b.N {
+			raw, err := gj.Marshal(benchData)
+			checkErr(b, err)
+			d := newProduct()
+			err = gj.Unmarshal(raw, d)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(raw)))
+			}
+		}
+	})
+
+	b.Run("Sonic", func(b *testing.B) {
+		for i := range b.N {
+			raw, err := sonic.Marshal(benchData)
+			checkErr(b, err)
+			d := newProduct()
+			err = sonic.Unmarshal(raw, d)
+			checkErr(b, err)
+			if i == 0 {
+				b.SetBytes(int64(len(raw)))
+			}
+		}
+	})
+
+	b.Run("ProtoClone", func(b *testing.B) {
+		b.SetBytes(int64(proto.Size(benchData)))
+		b.ResetTimer()
 		for range b.N {
-			raw, _ := json.Marshal(benchData)
-			d := newProduct()
-			_ = json.Unmarshal(raw, d)
-		}
-	})
-
-	b.Run("ProtoCopy", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			raw, _ := proto.Marshal(benchData)
-			d := newProduct()
-			_ = proto.Unmarshal(raw, d)
-		}
-	})
-
-	b.Run("ProtoJsonCopy", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			raw, _ := protojson.Marshal(benchData)
-			d := newProduct()
-			_ = protojson.Unmarshal(raw, d)
-		}
-	})
-
-	b.Run("MsgpackCopy", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			raw, _ := msgpack.Marshal(benchData)
-			d := newProduct()
-			_ = msgpack.Unmarshal(raw, d)
-		}
-	})
-
-	b.Run("JsoniterCopy", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			raw, _ := jsoniter.Marshal(benchData)
-			d := newProduct()
-			_ = jsoniter.Unmarshal(raw, d)
-		}
-	})
-
-	b.Run("GoccyJsonCopy", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			raw, _ := gj.Marshal(benchData)
-			d := newProduct()
-			_ = gj.Unmarshal(raw, d)
-		}
-	})
-
-	b.Run("SonicCopy", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			raw, _ := sonic.ConfigStd.Marshal(benchData)
-			d := newProduct()
-			_ = sonic.ConfigStd.Unmarshal(raw, d)
-		}
-	})
-
-	b.Run("ProtoCloneCopy", func(b *testing.B) {
-		for i := 0; i < b.N; i++ {
-			d := protoClone(benchData)
-			_ = d
+			_ = protoClone(benchData)
+			// _ = d
 		}
 	})
 }
