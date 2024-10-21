@@ -5,7 +5,7 @@ go 1.23
 require (
 	github.com/go-faker/faker/v4 v4.4.2
 	github.com/goccy/go-json v0.9.11
-	github.com/jinzhu/copier v0.4.0
+	github.com/jinzhu/copier v0.3.5
 	github.com/json-iterator/go v1.1.12
 	github.com/stretchr/testify v1.8.3
 	github.com/vmihailenco/msgpack/v5 v5.4.1

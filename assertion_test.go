@@ -15,7 +15,6 @@ func TestJson(t *testing.T) {
 	t.Parallel()
 	assert := func(t *testing.T, want proto.Message, got proto.Message) {
 		equal := proto.Equal(want, got)
-		// marshal to json and diff
 		if !equal {
 			expected, err := json.Marshal(want)
 			require.NoError(t, err)
@@ -46,14 +45,12 @@ func TestJson(t *testing.T) {
 		t.Run(path.Join(sample.Name, "Copier"), func(t *testing.T) {
 			t.Parallel()
 			got := sample.New()
-			err := copier.CopyWithOption(got, want, copier.Option{
-				// DeepCopy: true,
-			})
+			err := copier.Copy(got, want)
 			require.NoError(t, err)
 			assert(t, want, got)
 		})
 
-		t.Run(path.Join(sample.Name, "Copier"), func(t *testing.T) {
+		t.Run(path.Join(sample.Name, "Clone"), func(t *testing.T) {
 			t.Parallel()
 			got := proto.Clone(want)
 			assert(t, want, got)
