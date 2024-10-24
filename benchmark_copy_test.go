@@ -10,7 +10,7 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func BenchmarkClone(b *testing.B) {
+func BenchmarkCopy(b *testing.B) {
 	for sample := range slices.Values(samples) {
 		item := sample.Random()
 		for engine := range slices.Values(engines) {
